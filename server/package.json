@@ -14,7 +14,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@google-cloud/debug-agent": "^4.2.2",
     "cookie-session": "^1.4.0",
     "express": "^4.17.1",
     "mongodb": "^3.5.5",
