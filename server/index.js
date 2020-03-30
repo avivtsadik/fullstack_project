@@ -5,6 +5,7 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 require('./models/User');
+require('./models/Survey');
 require('./services/passport');
 
 // mongoose.connect(keys.mongoURI);
@@ -16,6 +17,14 @@ mongoose.connect(keys.mongoURI, {
     .catch(err => {
     console.log(`DB Connection Error: ${err.message}`);
     });
+
+mongoose.connection.on('error',function (err) {  
+    console.log('Mongoose default connection error: ' + err);
+    }); 
+    
+mongoose.connection.on('disconnected', function () {  
+console.log('Mongoose default connection disconnected'); 
+});
 
 const app = express();
 
@@ -31,9 +40,10 @@ app.use(passport.session());
 
 require('./routhes/authRouthes')(app);
 require('./routhes/billingRoutes')(app);
+require('./routhes/surveyRoutes')(app);
 
 // This is to upload our project including routing
-if (process.env.NODE_ENV === 'profuction') {
+if (process.env.NODE_ENV === 'production') {
     // Express will serve up production assets
     // like our main.js file, or main.css file!
     app.use(express.static('client/build'));
